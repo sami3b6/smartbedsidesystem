@@ -41,12 +41,17 @@ class SmartBedsideSystem:
         Returns: int: SpO₂ percentage (70–100).
         Raises: SmartBedsideError: If the sensor returns an invalid reading (-1).
         """
+
         spo2 = self.spo2_hr_sensor.get_spo2()
+        heart_rate = self.spo2_hr_sensor.get_heartbeat()
 
         if spo2 == -1:
             raise SmartBedsideError()
 
-        return spo2
+        if heart_rate == -1:
+            raise SmartBedsideError()
+
+        return [spo2, heart_rate]
     def manage_alarm(self) -> None:
         """
         Activate or deactivate the alarm based on the patient's blood oxygen saturation (SpO₂).
